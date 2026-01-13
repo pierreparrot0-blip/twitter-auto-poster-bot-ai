@@ -11,28 +11,32 @@ const twitterClient = new TwitterApi({
   accessSecret: SECRETS.ACCESS_SECRET,
 });
 
+const genAI = new GenAI.GoogleGenerativeAI(SECRETS.GEMINI_API_KEY);
+
 const generationConfig = {
   maxOutputTokens: 400,
 };
-const genAI = new GenAI.GoogleGenerativeAI(SECRETS.GEMINI_API_KEY);
 
 async function run() {
-  // For text-only input, use the gemini-pro model
-  const model = genAI.getGenerativeModel({
-    //model: "gemini-pro",
-    model: "models/gemini-2.0-flash",
-    generationConfig,
-  });
+  try {
+    const model = genAI.getGenerativeModel({
+      model: "models/gemini-2.0-flash",
+      generationConfig,
+    });
 
-  // Write your prompt here
-  const prompt =
-    "generate a web development content, tips and tricks or something new or some rant or some advice as a tweet, it should not be vague and should be unique; under 280 characters and should be plain text, you can use emojis";
+    const prompt =
+      "Generate a unique web development tip, advice, rant, or insight as a tweet. Under 280 characters, plain text, emojis allowed.";
 
-  const result = await model.generateContent(prompt);
-  const response = await result.response;
-  const text = response.text();
-  console.log(text);
-  sendTweet(text);
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+
+    console.log("Generated tweet:", text);
+
+    await sendTweet(text);
+  } catch (error) {
+    console.error("Error during generation or tweeting:", error);
+    process.exit(1);
+  }
 }
 
 run();
@@ -43,5 +47,6 @@ async function sendTweet(tweetText) {
     console.log("Tweet sent successfully!");
   } catch (error) {
     console.error("Error sending tweet:", error);
+    throw error;
   }
 }
