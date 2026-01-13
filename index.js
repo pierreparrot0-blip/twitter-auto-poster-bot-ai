@@ -11,7 +11,7 @@ const twitterClient = new TwitterApi({
   accessSecret: SECRETS.ACCESS_SECRET,
 });
 
-const genAI = new GenAI.GoogleGenerativeAI(SECRETS.GEMINI_API_KEY);
+const genAI = new GenAI.GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const generationConfig = {
   maxOutputTokens: 400,
