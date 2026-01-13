@@ -12,6 +12,13 @@ jobs:
   build:
     name: Auto Tweet Using AI
     runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      APP_KEY: ${{ secrets.APP_KEY }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
