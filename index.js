@@ -21,7 +21,7 @@ async function run() {
 
     console.log("Generated tweet:", text);
 
-    await sendTweet(test);
+    await sendTweet(text);
   } catch (error) {
     console.error("Error during generation or tweeting:", error);
     process.exit(1);
